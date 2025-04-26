@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercício de formulário</title>
+</head>
+<style>
+    .form_container{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        background-color: rgb(255, 217, 0);
+        border-radius: 20px;
+
+    }
+
+    .input_container{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+         
+    }
+
+</style>
+
+<body>
+    <form id="form">
+        <div class="form_container">
+            <div class="input_container">
+                <label>Nome</label>
+                <input id="nome" name="name">
+            </div>
+
+            <div class="input_container">
+                <label>Email</label>
+                <input id="email" type="email" name="email">
+
+            </div>
+
+            <div class="input_container">
+                <label>Senha</label>
+                <input id="password" type="password" name="password">
+            </div>
+
+
+            <div class="input_container">
+                <label>Data de Nascimento</label>
+                <input id="data" type="date"  name="data_nascimento">
+            </div>
+
+            <div class="input_container">
+                <label>Cpf</label>
+                <input id="cpf" type="number" name="number">
+            </div>
+
+            <button type="submit">Enviar</button>
+
+        </div>
+    
+        <script>
+
+            let form = document.getElementById("form");
+            let nome = document.getElementById("nome");
+            let email = document.getElementById("email");
+            let senha = document.getElementById("password");
+            let data = document.getElementById("data");
+            let cpf = document.getElementById("cpf");
+
+            form = addEventListener("submit", function(){
+                event.preventDefault();
+
+                localStorage.setItem("nome", nome.value );
+                localStorage.setItem("email", email.value);
+                localStorage.setItem("data", data.value);
+                localStorage.setItem("cpf", cpf.value);
+                
+            })
+
+
+        </script>
+    
+</body>
+</html>
