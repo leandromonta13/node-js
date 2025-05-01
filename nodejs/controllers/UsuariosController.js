@@ -46,6 +46,92 @@ const usuariosController = {
             })
 
         }
+    },
+
+    async buscarPorid(req, res){
+        try {
+            const {id} = req.params;
+            const [usuario] = await connection.execute(
+                'SELECT * FROM usuarios WHERE id = ?',
+                [id]
+            )
+            
+            if (usuario.length === 0){
+                return res.status(404).json({
+                    success: false,
+                    message: "Usuario nao encontrado"
+                })
+            }
+
+            
+            return res.status(201).json({
+                success: true,
+                data: usuario[0]
+            })
+        } catch (error){
+            console.error("Erro ao buscar usuario",error)
+            return res.status(500).json({
+                sucess: false,
+                message: "Erro ao buscar usuario",
+                error: error.message
+            })
+
+        }
+    },
+    async alterarDados(req, res){
+        try {
+            const {id} = req.params;
+            const {nome, email, idade} = req.body;
+
+            const camposATUALIZAR = []
+            const valores = []
+
+            if(nome){
+                camposATUALIZAR.push('nome = ?'),
+                valores.push(nome)
+
+            }
+
+            if(email){
+                camposATUALIZAR.push('email = ?'),
+                valores.push(email)
+            }
+
+            if(idade){
+                camposATUALIZAR.push('idade = ?'),
+                valores.push(idade)
+            }
+
+            valores.push(id)
+
+            const [result] = await connection.execute(
+                `UPDATE usuarios SET ${camposATUALIZAR.join(', ')} WHERE id = ?`,
+                valores
+
+
+            );
+
+            if(result.affectedRows === 0){
+                return res.status(404).json({
+                    success: false,
+                    message: "Usuario nao encontrado"
+                })
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: 'Usuario ${id} atualizado com sucesso',
+                registroAfetados: result.affectedRows
+            })
+
+        } catch (error){
+            console.error("Erro ao alterar usuario", error)
+            return res.status(500).json({
+                success: false,
+                message: "Erro ao alterar usuario",
+                error: error.message
+            })
+        }
     }
 
 }
